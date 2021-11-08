@@ -3,7 +3,6 @@
 # Pulls requests out of the req_google_images queue, processes them, and sends an appropriate response
 # to the res_google_images queue.
 
-import urllib.parse
 import pika, os, json
 
 # Import the actual client code and instantiate.
@@ -21,14 +20,13 @@ channel.queue_declare(queue='req_google_images')
 # For each request in the queue, parse it and hand off to the GoogleImages client service.
 def process_request(channel, method, properties, req_body):
     print('received message ', str(req_body))
-    json_request = {}
     json_response = {'success': True}
     num_images = 10
-    image_parameters = ''
+
     try:
         json_request = json.loads(req_body)
     except ValueError as e:
-        json_response =  {'success': False, 'error_message': 'Request body did not contain not valid JSON'}
+        json_response = {'success': False, 'error_message': 'Request body did not contain not valid JSON'}
     else:
         # Parse the request and prepare the search terms. image_parameters is required, num_images is optional.
         if 'image_parameters' not in json_request:

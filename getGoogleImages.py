@@ -21,16 +21,19 @@ class GoogleImages():
     def image_query(self, image_parameters, num_images):
         query_list = []
         results = []
+
         for parameter in image_parameters:
             # If the search term includes a space, it's a phrase and needs to be wrapped in quotes.
             if ' ' in parameter:
                 parameter = '"' + parameter + '"'
             parameter = urllib.parse.quote_plus(parameter)
             query_list.append(parameter)
+
         # Now build a query string with the formatted parameters.
         query = '+'.join(query_list)
         images_results = self.google_request(query, num_images)
         for image in images_results:
             results.append(image['link'])
+
         return results
 
