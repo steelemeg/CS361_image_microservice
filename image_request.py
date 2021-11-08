@@ -20,10 +20,20 @@ connect = pika.BlockingConnection(parameters)
 
 # Connect to the incoming requests queue.
 channel = connect.channel()
-channel.queue_declare(queue='req_google_images')
+channel.exchange_declare(exchange='google_images', exchange_type='direct')
+result = channel.queue_declare(queue='', exclusive=True)
+queue_name = result.method.queue
+
+# Define team members.
+team = ["Jeff", "Patricia", "Tim", "Zach", "Megan"]
+
+# Bind each team member queue.
+for each in team:
+    channel.queue_bind(exchange='google_images', queue=queue_name, routing_key=each)
+#channel.queue_declare(queue='req_google_images')
 
 # For each request in the queue, parse it and hand off to the GoogleImages client service.
-def process_request(channel, properties, req_body):
+def process_request(channel, method, properties, req_body):
     json_response = {'success': True}
     num_images = 10
 
@@ -43,12 +53,13 @@ def process_request(channel, properties, req_body):
             image_parameters = json_request['image_parameters']
             results = image_fetcher.image_query(image_parameters, num_images)
             json_response['images'] = results
-            channel.basic_publish(routing_key='res_google_images',
+            print(results)
+            channel.basic_publish(routing_key=method.routing_key,
                                   exchange='',
                                   properties=pika.BasicProperties(correlation_id=properties.correlation_id),
                                   body=json.dumps(json_response))
 
-channel.basic_consume(queue='req_google_images', on_message_callback=process_request, auto_ack=True)
+channel.basic_consume(queue=queue_name, on_message_callback=process_request, auto_ack=True)
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()
