@@ -26,7 +26,7 @@ Connects to a Google custom search engine; the API key is stored in the GOOGLE_C
   "num_images":       3
  }
  ```
- - **image_parameters** [List] - Required. Any number of image search terms. These may include phrases wrapped in double quotes.
+ - **image_parameters** [List] - Required. Any number of image search terms. These may include phrases wrapped in double or single quotes. 
  - **num_images** [Number]  - Optional. A number specifying how many image links the requestor wants to receive. Default is currently 10.
      
 ## Response
