@@ -11,16 +11,16 @@ base_url = 'https://customsearch.googleapis.com/customsearch/v1?key='
 
 class GoogleImages():
     def __init__(self):
-        self.routing_key = 'res_google_images'
+        self.engine_id = 'd5ead32b6cf2d3fc4'
 
     def google_request(self, query, num_images):
-        engine_id = 'd5ead32b6cf2d3fc4'
-        request_url = f"{base_url}{api_key}&cx={engine_id}&q={query}&num={num_images}&enableImageSearch=True&defaultToImageSearch=True&disableWebSearch=True&searchType=Image"
+        request_url = f"{base_url}{api_key}&cx={self.engine_id}&q={query}&num={num_images}&enableImageSearch=True&defaultToImageSearch=True&disableWebSearch=True&searchType=Image"
         response = requests.get(request_url).json()
         return response['items']
 
     def image_query(self, image_parameters, num_images):
         query_list = []
+        results = []
         for parameter in image_parameters:
             # If the search term includes a space, it's a phrase and needs to be wrapped in quotes.
             if ' ' in parameter:
@@ -31,5 +31,6 @@ class GoogleImages():
         query = '+'.join(query_list)
         images_results = self.google_request(query, num_images)
         for image in images_results:
-            print(image['link'])
+            results.append(image['link'])
+        return results
 
