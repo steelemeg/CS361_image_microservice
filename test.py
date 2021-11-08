@@ -30,6 +30,5 @@ class GoogleImages():
         # Now build a query string with the formatted parameters.
         query = '+'.join(query_list)
         images_results = self.google_request(query, num_images)
-        for image in images_results:
-            print(image['link'])
+        print(images_results)
 

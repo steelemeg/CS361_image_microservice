@@ -10,6 +10,6 @@ channel = connection.channel()
 # Connect to the outgoing/responses queue.
 channel.queue_declare(queue='res_google_images')
 channel.basic_publish(exchange='', routing_key='req_google_images', \
-                      body='{"image_parameters": ["search phrase jaguar", "second test"], "num_images": 2}')
+                      body='{"image_parameters": ["mars rover", "xkcd"], "num_images": 2}')
                       #body='i am not json mwaha')
 # pull metatags - # - "og:image"
