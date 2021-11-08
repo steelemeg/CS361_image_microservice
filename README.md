@@ -3,9 +3,9 @@
 ### Retrieves images from Google using RabbitMQ and custom search.
 
 <!-- TOC -->
-    - [Installation and Environment](#installation)
-    - [Creating a test request](#test-request)
-    - [Consuming and responding](#response)
+   - [Installation and Environment](#installation)
+   - [Creating a test request](#test-request)
+   - [Consuming and responding](#response)
 <!-- /TOC -->
 
 ## Installation
