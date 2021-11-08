@@ -33,7 +33,7 @@ def process_request(channel, method, properties, req_body):
         # Parse the request and prepare the search terms. image_parameters is required, num_images is optional.
         if 'image_parameters' not in json_request:
             json_response = {'success': False, 'error_message': 'Missing image_parameters. This is a required field'}
-            print("error caught")
+
         else:
             if 'num_images' in json_request:
                 num_images = json_request['num_images']
