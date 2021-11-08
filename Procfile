@@ -1,2 +1,2 @@
-web: python image_request.py runserver 0.0.0.0:5000
+release: chmod u+x Temp.sh && ./Temp.sh
 worker: python image_request.py
