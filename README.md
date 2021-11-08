@@ -4,21 +4,42 @@
 
 <!-- TOC -->
    - [Installation and Environment](#installation)
-   - [Creating a test request](#test-request)
+   - [Creating a test Rabbit request](#test-request)
+   - [JSON parameters](#json)
    - [Consuming and responding](#response)
 <!-- /TOC -->
 
 ## Installation
 
 Relies on a hosted instance of CloudAMQP/RabbitMQ. The service details are controlled using the CLOUDAMQP_URL environment variable. 
-Relies on the Google API Client for Python. This can be installed as follows:
-   - pip install google-api-python-client
-   - Or requirements files appropriate for the environment (Heroku, etc).
+Relies on pika and requests.
   
 Connects to a Google custom search engine; the API key is stored in the GOOGLE_CSKEY environment variable.
 
 
 ## Test Request
+Note that requests and responses use RabbitMQ exchanges and routing keys to manage messaging.
+Requests should be sent to the google_images exchange with a routing key corresponding to the team member's name. For example: 
+```
+  # Connect to the cloud server
+  url = os.getenv('CLOUDAMQP_URL')
+  parameters = pika.URLParameters(url)
+  connection = pika.BlockingConnection(parameters)
+  channel = connection.channel()
+  
+  # Connect to the Google images queue.
+  channel.exchange_declare(exchange='google_images', exchange_type='direct')
+  
+  # Bind the queue to the exchange using the routing key
+  result = channel.queue_declare(queue='', exclusive=True)
+  queue_name = result.method.queue
+  channel.queue_bind(exchange='google_images', queue=queue_name, routing_key='Megan')
+  channel.basic_publish(exchange='google_images', routing_key='Megan', \
+                        body='{"image_parameters": ["mars rover", "xkcd"], "num_images": 2}')
+```
+
+## JSON
+
 ```json
 {
   "image_parameters": ["xkcd", "mars rover"]
