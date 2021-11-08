@@ -19,7 +19,6 @@ channel.queue_declare(queue='req_google_images')
 
 # For each request in the queue, parse it and hand off to the GoogleImages client service.
 def process_request(channel, method, properties, req_body):
-    print('received message ', str(req_body))
     json_response = {'success': True}
     num_images = 10
 
