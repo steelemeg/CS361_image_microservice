@@ -1,2 +1,2 @@
-release: chmod u+x Temp.sh && ./Temp.sh
+python image_request.py
 worker: python image_request.py
