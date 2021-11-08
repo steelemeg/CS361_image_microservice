@@ -1,6 +1,5 @@
-# Pushes responses back to the req_google_images queue
-# Using https://www.cloudamqp.com/docs/python.html as a guide
-import pika, os, ssl
+# Generate test messages
+import pika, os
 
 # Connect to the cloud server
 url = os.getenv('CLOUDAMQP_URL')
@@ -12,4 +11,3 @@ channel.queue_declare(queue='res_google_images')
 channel.basic_publish(exchange='', routing_key='req_google_images', \
                       body='{"image_parameters": ["mars rover", "xkcd"], "num_images": 2}')
                       #body='i am not json mwaha')
-# pull metatags - # - "og:image"

@@ -1,4 +1,7 @@
-# Pulls requests out of the req_google_images queue.
+# Using https://www.cloudamqp.com/docs/python.html as a guide
+
+# Pulls requests out of the req_google_images queue, processes them, and sends an appropriate response
+# to the res_google_images queue.
 
 import urllib.parse
 import pika, os, json
