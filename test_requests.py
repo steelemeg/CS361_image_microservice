@@ -6,7 +6,7 @@ url = os.getenv('CLOUDAMQP_URL')
 parameters = pika.URLParameters(url)
 connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
-# Connect to the outgoing/responses queue.
+# Connect to the Google images queue.
 channel.exchange_declare(exchange='google_images', exchange_type='direct')
 # Bind the queue to the exchange using the routing key
 result = channel.queue_declare(queue='', exclusive=True)
