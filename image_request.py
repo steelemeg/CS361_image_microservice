@@ -3,10 +3,13 @@
 # Pulls requests out of the req_google_images queue, processes them, and sends an appropriate response
 # to the res_google_images queue.
 
-import pika, os, json
+import json
+import os
+import pika
 
 # Import the actual client code and instantiate.
 from getGoogleImages import GoogleImages
+
 image_fetcher = GoogleImages()
 
 # Connect to the Cloud AMQP queue using an environment variable.
@@ -18,7 +21,7 @@ channel = connect.channel()
 channel.queue_declare(queue='req_google_images')
 
 # For each request in the queue, parse it and hand off to the GoogleImages client service.
-def process_request(channel, method, properties, req_body):
+def process_request(channel, properties, req_body):
     json_response = {'success': True}
     num_images = 10
 
