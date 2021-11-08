@@ -12,10 +12,12 @@ from getGoogleImages import GoogleImages
 
 image_fetcher = GoogleImages()
 
-# Connect to the Cloud AMQP queue using an environment variable.
+# Connect to the Cloud AMQP queue using an environment variable and pika.
 url = os.getenv('CLOUDAMQP_URL')
 parameters = pika.URLParameters(url)
+parameters.socket_timeout = 10
 connect = pika.BlockingConnection(parameters)
+
 # Connect to the incoming requests queue.
 channel = connect.channel()
 channel.queue_declare(queue='req_google_images')
@@ -25,6 +27,7 @@ def process_request(channel, properties, req_body):
     json_response = {'success': True}
     num_images = 10
 
+    # Check if the requests body parses as valid JSON.
     try:
         json_request = json.loads(req_body)
     except ValueError as e:
@@ -42,7 +45,7 @@ def process_request(channel, properties, req_body):
             json_response['images'] = results
             channel.basic_publish(routing_key='res_google_images',
                                   exchange='',
-                                  properties=pika.BasicProperties(correlation_id= properties.correlation_id),
+                                  properties=pika.BasicProperties(correlation_id=properties.correlation_id),
                                   body=json.dumps(json_response))
 
 channel.basic_consume(queue='req_google_images', on_message_callback=process_request, auto_ack=True)
