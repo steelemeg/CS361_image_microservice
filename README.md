@@ -33,7 +33,9 @@ Connects to a Google custom search engine; the API key is stored in the GOOGLE_C
 **Successful Request**
 ```json
 {
-"image_urls": ["https://imgs.xkcd.com/comics/spirit.png", "https://www.explainxkcd.com/wiki/images/2/27/opportunity_rover.png", "https://imgs.xkcd.com/comics/opportunity.png"]
+"image_urls": ["https://imgs.xkcd.com/comics/spirit.png", 
+               "https://www.explainxkcd.com/wiki/images/2/27/opportunity_rover.png", 
+               "https://imgs.xkcd.com/comics/opportunity.png"]
 }
 ```
 **Failure**
