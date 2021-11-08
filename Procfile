@@ -1,1 +1,1 @@
-web: python simple_server.py
+worker: python image_request.py
