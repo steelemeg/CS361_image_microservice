@@ -15,7 +15,8 @@
 Relies on a hosted instance of CloudAMQP/RabbitMQ. The service details are controlled using the CLOUDAMQP_URL environment variable. 
 Relies on the Google API Client for Python. This can be installed as follows:
    - pip install google-api-python-client
-   - OR use requirements files appropriate for the environment (Heroku, etc).
+   - Or requirements files appropriate for the environment (Heroku, etc).
+  
 Connects to a Google custom search engine; the API key is stored in the GOOGLE_CSKEY environment variable.
 
 
