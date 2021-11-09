@@ -1,1 +1,1 @@
-python server_responses.py
+worker: python server_responses.py
