@@ -14,7 +14,7 @@ params = pika.URLParameters(url)
 # Configure the connection.
 connection = pika.BlockingConnection(params)
 channel = connection.channel()
-channel.queue_declare(queue='google_images')
+channel.queue_declare(queue='google_images_requests')
 
 def on_request(ch, method, properties, req_body):
     json_response = {'success': True}
@@ -45,7 +45,7 @@ def on_request(ch, method, properties, req_body):
 
 
 channel.basic_qos(prefetch_count=1)
-channel.basic_consume('google_images', on_message_callback=on_request)
+channel.basic_consume('google_images_requests', on_message_callback=on_request)
 
 print(' [*] Waiting for messages:')
 channel.start_consuming()
