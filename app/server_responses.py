@@ -2,7 +2,7 @@
 
 import pika, os, json
 # Import the parser code and instantiate.
-from getGoogleImages import GoogleImages
+from app.getGoogleImages import GoogleImages
 image_fetcher = GoogleImages()
 
 
@@ -36,6 +36,7 @@ def on_request(ch, method, properties, req_body):
             image_parameters = json_request['image_parameters']
             results = image_fetcher.image_query(image_parameters, num_images)
             json_response['images'] = results
+            #json_response['images'].append("local!")
             ch.basic_publish(exchange='',
                              routing_key=properties.reply_to,
                              properties=pika.BasicProperties(correlation_id= \
