@@ -1,2 +1,2 @@
-python image_request.py
-worker: python image_request.py
+python server_responses.py
+worker: server_responses.py
