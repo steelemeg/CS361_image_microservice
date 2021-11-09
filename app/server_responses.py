@@ -1,6 +1,6 @@
 # Based on code from https://www.cloudamqp.com/docs/python.html
 
-import pika, os, json, logging
+import pika, os, json
 # Import the parser code and instantiate.
 from getGoogleImages import GoogleImages
 image_fetcher = GoogleImages()
