@@ -19,7 +19,6 @@ channel.queue_declare(queue='google_images_requests')
 def on_request(ch, method, properties, req_body):
     json_response = {'success': True}
     num_images = 10
-    print(req_body, properties.reply_to)
     # Check if the requests body parses as valid JSON.
     try:
         json_request = json.loads(req_body)
@@ -36,7 +35,6 @@ def on_request(ch, method, properties, req_body):
             image_parameters = json_request['image_parameters']
             results = image_fetcher.image_query(image_parameters, num_images)
             json_response['images'] = results
-            #json_response['images'].append("local!")
             ch.basic_publish(exchange='',
                              routing_key=properties.reply_to,
                              properties=pika.BasicProperties(correlation_id= \
