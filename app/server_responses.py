@@ -2,7 +2,7 @@
 
 import pika, os, json
 # Import the parser code and instantiate.
-from get_google_images import GoogleImages
+from getGoogleImages import GoogleImages
 image_fetcher = GoogleImages()
 
 
