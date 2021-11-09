@@ -1,8 +1,8 @@
-# Using template code from https://www.cloudamqp.com/docs/python.html
+# Using template from https://www.cloudamqp.com/docs/python.html
 # Sample client interaction code
 
 import pika, os, json, uuid
-
+custom_queue = 'google_images_Tester6'
 class ImageRequests(object):
 
     def __init__(self):
@@ -16,7 +16,7 @@ class ImageRequests(object):
 
         # Results queue can be any value at the user's discretion. This is where the client should
         # listen for image responses, and where the image server will publish responses.
-        result = self.channel.queue_declare(queue='google_images_Tester', exclusive=False)
+        result = self.channel.queue_declare(queue=custom_queue, exclusive=False, auto_delete=True)
         self.callback_queue = result.method.queue
 
         # Start listening to the callback queue
