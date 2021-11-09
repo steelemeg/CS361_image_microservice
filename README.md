@@ -19,23 +19,12 @@ Connects to a Google custom search engine; the API key is stored in the GOOGLE_C
 
 ## Test Request
 Note that requests and responses use RabbitMQ exchanges and routing keys to manage messaging.
-Requests should be sent to the google_images exchange with a routing key corresponding to the team member's name. For example: 
+Requests should be published to the 'google_images_requests' queue.
+Responses will be sent to the unique callback queue of the client's choice, as specified by the routing key. (Full test request code is available in client.requests.py.)
+For example, 
 ```
-  # Connect to the cloud server
-  url = os.getenv('CLOUDAMQP_URL')
-  parameters = pika.URLParameters(url)
-  connection = pika.BlockingConnection(parameters)
-  channel = connection.channel()
-  
-  # Connect to the Google images queue.
-  channel.exchange_declare(exchange='google_images', exchange_type='direct')
-  
-  # Bind the queue to the exchange using the routing key
-  result = channel.queue_declare(queue='', exclusive=True)
-  queue_name = result.method.queue
-  channel.queue_bind(exchange='google_images', queue=queue_name, routing_key='Megan')
-  channel.basic_publish(exchange='google_images', routing_key='Megan', \
-                        body='{"image_parameters": ["mars rover", "xkcd"], "num_images": 2}')
+result = self.channel.queue_declare(queue='google_images_Megan', exclusive=False)
+self.callback_queue = result.method.queue
 ```
 
 ## JSON
