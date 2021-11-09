@@ -19,7 +19,11 @@ Connects to a Google custom search engine; the API key is stored in the GOOGLE_C
 
 ## Test Request
 Note that requests and responses use RabbitMQ exchanges and routing keys to manage messaging.
-Requests should be published to the 'google_images_requests' queue.
+Requests should be published to the 'google_images_requests' queue. For example, when publishing a request, use:
+```
+routing_key='google_images_requests'
+```
+
 Responses will be sent to the unique callback queue of the client's choice, as specified by the routing key. (Full test request code is available in client.requests.py.)
 For example, 
 ```
