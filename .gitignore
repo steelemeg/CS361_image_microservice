@@ -114,3 +114,6 @@ dmypy.json
 .pyre/
 Temp.sh
 .idea/workspace.xml
+.idea/misc.xml
+*.xml
+.idea/imageService.iml
