@@ -1,6 +1,6 @@
 # Based on code from https://www.cloudamqp.com/docs/python.html
 
-import pika, os, json
+import pika, os, json, logging
 # Import the parser code and instantiate.
 from getGoogleImages import GoogleImages
 image_fetcher = GoogleImages()
@@ -19,6 +19,8 @@ channel.queue_declare(queue='google_images_requests')
 def on_request(ch, method, properties, req_body):
     json_response = {'success': True}
     num_images = 10
+    # Rough logging
+    print(req_body, properties.reply_to)
     # Check if the requests body parses as valid JSON.
     try:
         json_request = json.loads(req_body)
