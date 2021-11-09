@@ -16,7 +16,7 @@ class ImageRequests(object):
 
         # Results queue can be any value at the user's discretion. This is where the client should
         # listen for image responses, and where the image server will publish responses.
-        result = self.channel.queue_declare(queue='google_images_Megan', exclusive=False)
+        result = self.channel.queue_declare(queue='google_images_Tester', exclusive=False)
         self.callback_queue = result.method.queue
 
         # Start listening to the callback queue
