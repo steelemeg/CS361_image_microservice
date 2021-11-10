@@ -118,3 +118,4 @@ Temp.sh
 *.xml
 .idea/imageService.iml
 app/secrets.py
+app/log.txt

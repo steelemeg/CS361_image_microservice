@@ -1,6 +1,7 @@
 # Based on code from https://www.cloudamqp.com/docs/python.html
 
-import pika, os, json, re
+import pika, os, json
+from datetime import datetime
 # Import the parser code and instantiate.
 from getGoogleImages import GoogleImages
 image_fetcher = GoogleImages()
@@ -21,17 +22,20 @@ connection = pika.BlockingConnection(params)
 channel = connection.channel()
 channel.queue_declare(queue='google_images_requests')
 
-def replace_map(input):
-    replace_map = {}
+def request_logger(*args):
+    logfile = open("log.txt", "a")
+    logfile.write(str(datetime.today()))
+    for each in args:
+        logfile.write(str(each).rstrip('\n'))
+    logfile.write('\n')
+    logfile.close()
 
 def on_request(ch, method, properties, req_body):
     json_response = {'success': True}
     num_images = 10
-    # Deal with json formatting
-
     # Rough logging
-    print(req_body, properties.reply_to)
-    #test= str(req_body).replace("\'", '').replace("'", "")
+    print(req_body, properties.reply_to, json.loads(req_body))
+    request_logger(req_body, properties)
     # Check if the requests body parses as valid JSON.
     try:
         json_request = json.loads(req_body)
@@ -72,10 +76,7 @@ channel.basic_qos(prefetch_count=1)
 channel.basic_consume('google_images_requests', on_message_callback=on_request)
 
 print(' [*] Waiting for messages:')
-try:
-    channel.start_consuming()
-except:
-    print("Bad message")
-    #channel.basic_consume('google_images_requests', on_message_callback=bad_requests)
+channel.start_consuming()
+
 
 connection.close()
