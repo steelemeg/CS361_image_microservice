@@ -26,6 +26,7 @@ def on_request(ch, method, properties, req_body):
     num_images = 10
     # Rough logging
     print(req_body, properties.reply_to)
+    print(req_body.replace("\'", '"'))
     # Check if the requests body parses as valid JSON.
     try:
         json_request = json.loads(req_body)
@@ -57,5 +58,9 @@ channel.basic_qos(prefetch_count=1)
 channel.basic_consume('google_images_requests', on_message_callback=on_request)
 
 print(' [*] Waiting for messages:')
-channel.start_consuming()
+try:
+    channel.start_consuming()
+except:
+    print("Bad format!")
+
 connection.close()
