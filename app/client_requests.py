@@ -2,7 +2,7 @@
 # Sample client interaction code
 
 import pika, os, json, uuid
-custom_queue = 'google_images_Tester6'
+custom_queue = 'google_images_AutoDelete'
 class ImageRequests(object):
 
     def __init__(self):
