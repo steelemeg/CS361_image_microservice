@@ -48,7 +48,7 @@ class ImageRequests(object):
 google_image_client = ImageRequests()
 
 # Send a test message
-message = {'image_parameters': ["mars rover", "xkcd"], "num_images": '3'}
+message = {'image_parameters': ["mars rover spirit", "xkcd"], "num_images": '3'}
 response = google_image_client.call(json.dumps(message))
 print("Printing response sent to client from server:")
 print(json.loads(response))

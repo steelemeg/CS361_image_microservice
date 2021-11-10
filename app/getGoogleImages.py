@@ -4,7 +4,12 @@ import os, urllib.parse, requests
 
 base_url = 'https://customsearch.googleapis.com/customsearch/v1?'
 # Get the api key
-api_key = os.environ.get('GOOGLE_CSKEY')
+api_key = ''
+if os.path.isfile('secrets.py'):
+    import secrets
+    api_key = secrets.GOOGLE_CSKEY
+else:
+    api_key = os.environ.get('GOOGLE_CSKEY')
 
 # Define the custom search url and ID; use the Google API Python client to manage the connection.
 base_url = 'https://customsearch.googleapis.com/customsearch/v1?key='
