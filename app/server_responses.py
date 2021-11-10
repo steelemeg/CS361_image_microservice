@@ -31,11 +31,12 @@ def on_request(ch, method, properties, req_body):
         if 'image_parameters' not in json_request:
             json_response = {'success': False, 'error_message': 'Missing image_parameters. This is a required field'}
         if 'num_images' in json_request and not json_request['num_images'].isnumeric():
-            json_response = {'success': False, 'error_message': 'Num_images is optional, but must be an integer number.'}
+            json_response = {'success': False, 'error_message': 'Num_images is optional, but must be an integer  \
+                                                number if specified.'}
         else:
             if 'num_images' in json_request:
                 # add handling here
-                num_images = json_request['num_images']
+                num_images = json_request['num_images'] if json_request['num_images'].isnumeric() else 10
             image_parameters = json_request['image_parameters']
             results = image_fetcher.image_query(image_parameters, num_images)
             json_response['images'] = results
