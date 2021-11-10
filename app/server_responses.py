@@ -1,6 +1,6 @@
 # Based on code from https://www.cloudamqp.com/docs/python.html
 
-import pika, os, json
+import pika, os, json, re
 # Import the parser code and instantiate.
 from getGoogleImages import GoogleImages
 image_fetcher = GoogleImages()
@@ -21,12 +21,17 @@ connection = pika.BlockingConnection(params)
 channel = connection.channel()
 channel.queue_declare(queue='google_images_requests')
 
+def replace_map(input):
+    replace_map = {}
+
 def on_request(ch, method, properties, req_body):
     json_response = {'success': True}
     num_images = 10
+    # Deal with json formatting
+
     # Rough logging
     print(req_body, properties.reply_to)
-    print(req_body.replace("\'", '"'))
+    #test= str(req_body).replace("\'", '').replace("'", "")
     # Check if the requests body parses as valid JSON.
     try:
         json_request = json.loads(req_body)
@@ -46,12 +51,13 @@ def on_request(ch, method, properties, req_body):
             image_parameters = json_request['image_parameters']
             results = image_fetcher.image_query(image_parameters, num_images)
             json_response['images'] = results
-            ch.basic_publish(exchange='',
-                             routing_key=properties.reply_to,
-                             properties=pika.BasicProperties(correlation_id= \
-                                                                 properties.correlation_id),
-                             body=json.dumps(json_response))
-            ch.basic_ack(delivery_tag=method.delivery_tag)
+    finally:
+        ch.basic_publish(exchange='',
+                         routing_key=properties.reply_to,
+                         properties=pika.BasicProperties(correlation_id= \
+                                                             properties.correlation_id),
+                         body=json.dumps(json_response))
+        ch.basic_ack(delivery_tag=method.delivery_tag)
 
 def bad_requests(ch, method, properties, req_body):
     print("Error caused by: ", req_body, properties.reply_to)
@@ -69,6 +75,7 @@ print(' [*] Waiting for messages:')
 try:
     channel.start_consuming()
 except:
-    channel.basic_consume('google_images_requests', on_message_callback=bad_requests)
+    print("Bad message")
+    #channel.basic_consume('google_images_requests', on_message_callback=bad_requests)
 
 connection.close()
