@@ -117,3 +117,4 @@ Temp.sh
 .idea/misc.xml
 *.xml
 .idea/imageService.iml
+app/secrets.py

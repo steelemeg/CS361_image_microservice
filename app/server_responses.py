@@ -5,10 +5,15 @@ import pika, os, json
 from getGoogleImages import GoogleImages
 image_fetcher = GoogleImages()
 
+url = ""
 
-# Access the CLOUDAMQP_URL environment variable
-# and parse it (fallback to localhost)
-url = os.environ.get('CLOUDAMQP_URL')
+if os.path.isfile('secrets.py'):
+    import secrets
+    url = secrets.CLOUDAMQP_URL
+else:
+    # Access the CLOUDAMQP_URL environment variable
+    url = os.environ.get('CLOUDAMQP_URL')
+
 params = pika.URLParameters(url)
 
 # Configure the connection.
