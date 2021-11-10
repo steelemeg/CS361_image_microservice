@@ -34,7 +34,7 @@ def on_request(ch, method, properties, req_body):
     json_response = {'success': True}
     num_images = 10
     # Rough logging
-    print(req_body, properties.reply_to, json.loads(req_body))
+    print(req_body, properties.reply_to)
     request_logger(req_body, properties)
     # Check if the requests body parses as valid JSON.
     try:
@@ -63,20 +63,11 @@ def on_request(ch, method, properties, req_body):
                          body=json.dumps(json_response))
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
-def bad_requests(ch, method, properties, req_body):
-    print("Error caused by: ", req_body, properties.reply_to)
-    json_response = {'success': False, 'error_message': 'Request was not properly formatted'}
-    ch.basic_publish(exchange='',
-                     routing_key=properties.reply_to,
-                     properties=pika.BasicProperties(correlation_id=properties.correlation_id),
-                     body=json.dumps(json_response))
-    ch.basic_ack(delivery_tag=method.delivery_tag)
 
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume('google_images_requests', on_message_callback=on_request)
 
 print(' [*] Waiting for messages:')
 channel.start_consuming()
-
 
 connection.close()
