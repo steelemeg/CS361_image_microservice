@@ -3,6 +3,7 @@
 
 import pika, os, json, uuid
 custom_queue = 'google_images_AutoDelete'
+
 class ImageRequests(object):
 
     def __init__(self):
@@ -51,4 +52,5 @@ google_image_client = ImageRequests()
 message = {'image_parameters': ["mars rover spirit", "xkcd"], "num_images": '3'}
 response = google_image_client.call(json.dumps(message))
 print("Printing response sent to client from server:")
-print(json.loads(response))
+print(json.loads(response)['images'])
+

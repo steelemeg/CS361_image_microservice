@@ -21,7 +21,10 @@ class GoogleImages():
     def google_request(self, query, num_images):
         request_url = f"{base_url}{api_key}&cx={self.engine_id}&q={query}&num={num_images}&enableImageSearch=True&defaultToImageSearch=True&disableWebSearch=True&searchType=Image"
         response = requests.get(request_url).json()
-        return response['items']
+        if 'items' in response:
+            return response['items']
+        else:
+            return ['Error', response]
 
     def image_query(self, image_parameters, num_images):
         query_list = []
