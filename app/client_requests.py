@@ -52,5 +52,5 @@ google_image_client = ImageRequests()
 message = {'image_parameters': ["mars rover spirit", "xkcd"], "num_images": '3'}
 response = google_image_client.call(json.dumps(message))
 print("Printing response sent to client from server:")
-print(json.loads(response)['images'])
+print(json.loads(response))
 
