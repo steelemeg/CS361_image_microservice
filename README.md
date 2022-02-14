@@ -1,4 +1,4 @@
-# CS361_image_microservice
+# rabbitMQ_image_microservice
  
 ### Retrieves images from Google using RabbitMQ and custom search.
 
